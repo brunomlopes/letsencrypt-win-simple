@@ -2,10 +2,22 @@
 
 <configuration>
   <system.webServer>
+    <handlers>
+      <clear />
+      <add name="StaticFile" path="*" verb="*"  modules="StaticFileModule,DefaultDocumentModule,DirectoryListingModule" resourceType="Either" requireAccess="Read" />
+    </handlers>
     <validation validateIntegratedModeConfiguration="false" />
     <staticContent>
       <mimeMap fileExtension="." mimeType="text/json" />
     </staticContent>
+    <rewrite>
+      <outboundRules>
+        <clear />
+      </outboundRules>
+      <rules>
+        <clear />
+      </rules>
+    </rewrite>
   </system.webServer>
   <system.web>
     <authorization>
