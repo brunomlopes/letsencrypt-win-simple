@@ -1301,11 +1301,21 @@ namespace LetsEncrypt.ACME.Simple
 
         private static void WarmupSite(Uri uri) 
         {
+            // This helps a bit in the warmup
+            Thread.Sleep(TimeSpan.FromSeconds(5));
             var request = WebRequest.Create(uri);
 
             try
             {
-                using (var response = request.GetResponse()) { }
+                using (var response = request.GetResponse())
+                {
+                    var buffer = new byte[1024];
+                    using (var stream = response.GetResponseStream())
+                    {
+                        //ensure that at least the server has sent some data
+                        stream?.Read(buffer, 0, 1024);
+                    }
+                }
             }
             catch (Exception ex) 
             {
